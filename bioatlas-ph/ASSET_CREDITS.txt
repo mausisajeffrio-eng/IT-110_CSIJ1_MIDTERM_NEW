@@ -1,0 +1,49 @@
+BIOATLAS PH — SOURCES AND LICENCES
+
+Portfolio photograph: Harpactes ardens (Philippine trogon)
+Photographer / rights holder: dmalerta
+Local file: assets/philippine-trogon.jpg
+Source: https://www.inaturalist.org/photos/608488019
+GBIF occurrence: https://www.gbif.org/occurrence/6131096907
+Reported location: Cagayan, Philippines
+Downloaded large-size variant:
+https://inaturalist-open-data.s3.amazonaws.com/photos/608488019/large.jpg
+Licence: Creative Commons Attribution-NonCommercial 4.0 International
+https://creativecommons.org/licenses/by-nc/4.0/
+No image editing was performed. CSS crops the image to its responsive frame.
+Credit and licence links appear next to the image on the portfolio page.
+
+Explorer record images
+Loaded from the media URLs supplied by each GBIF occurrence. Every detail
+dialog displays the provided creator, photo licence and original-photo link
+when available. Record-level licences and image licences are distinct.
+Absent photographs show a text placeholder instead of a substituted species.
+
+Biodiversity data
+GBIF and its contributing data publishers
+https://www.gbif.org/
+https://techdocs.gbif.org/en/openapi/
+Record detail dialogs show the dataset name, record licence and source URL.
+
+Map data and tiles
+OpenStreetMap contributors
+https://www.openstreetmap.org/copyright
+https://operations.osmfoundation.org/policies/tiles/
+Tiles are requested on demand; there is no offline tile downloading.
+
+Map libraries (unmodified vendored distributions)
+Leaflet 1.9.4
+https://leafletjs.com/
+https://github.com/Leaflet/Leaflet
+Licence: BSD-2-Clause, see assets/vendor/leaflet-LICENSE.txt
+
+Leaflet.markercluster 1.5.3
+https://github.com/Leaflet/Leaflet.markercluster
+Licence: MIT, see assets/vendor/markercluster-LICENSE.txt
+
+Favicon and UI marks
+Simple original SVG letter mark, search and bookmark interface symbols.
+System font stack and Georgia: no external font tracking or font download.
+
+Profile photograph
+assets/Jeffrio.png: photo of Jeff Rio Mausisa, the project author.

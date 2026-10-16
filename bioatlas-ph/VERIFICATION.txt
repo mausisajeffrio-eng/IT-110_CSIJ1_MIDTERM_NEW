@@ -1,0 +1,40 @@
+BIOATLAS PH — LOCAL VERIFICATION
+Date: 9 October 2026 (Asia/Manila)
+
+Passed: 9 pure JavaScript data tests
+- Invalid and reversed years
+- Philippine-only geographical filters and coordinate quality filtering
+- Taxon precedence and optional media filtering
+- GBIF pagination ceiling
+- Invalid map geometry
+- Missing coordinates and metadata
+- Safe external URLs
+- Photo licence version preservation
+- Malformed saved-record rejection
+
+Passed: Chromium browser checks using live GBIF responses
+- Initial occurrence load and rendered OSM map
+- Save, reload persistence, shortlist, details and source links
+- Previous/next pagination
+- Scientific-name, location and year filtering
+- Scientific-name suggestions and keyboard selection
+- Species groups and current-map-area search
+- Mobile map/list controls and portfolio
+- No horizontal overflow at 320px, 390px, 768px and 1440px
+- No uncaught browser JavaScript exceptions during these journeys
+
+Passed: controlled browser failure tests
+- Network request failure preserves previous records; retry recovers
+- Empty response clears markers and displays guidance
+- Older requests cannot replace newer results
+- Publisher-supplied HTML-like text stays inert
+- Malformed browser storage is ignored
+
+Visual review
+Inspected desktop/mobile portfolio and explorer screenshots, mobile map and
+record details. Checked local asset references in both HTML pages.
+
+Boundaries
+These are local browser checks, not production deployment or physical-device
+tests. No GitHub submission or public deployment has been performed. API and
+map availability can change. 

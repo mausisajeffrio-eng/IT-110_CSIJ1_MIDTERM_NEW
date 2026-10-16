@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore Philippine species occurrence records on a map. Filter GBIF data by species, area and year, and save a local research shortlist.">
+
+  <title>Explore the atlas — BioAtlas PH</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/vendor/leaflet.css">
+  <link rel="stylesheet" href="assets/vendor/MarkerCluster.css">
+  <link rel="stylesheet" href="styles.css">
+
+  <script src="assets/vendor/leaflet.js" defer></script>
+  <script src="assets/vendor/leaflet-markercluster.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+
+<body class="explorer">
+  <a class="skip-link" href="#filters">Skip to search filters</a>
+
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="BioAtlas PH home">
+      <img src="assets/favicon.svg" width="35" height="35" alt="">
+      <span>BioAtlas <span class="brand-ph">PH</span></span>
+    </a>
+
+    <nav aria-label="Main navigation">
+      <a class="nav-current" href="app.html" aria-current="page">Explorer</a>
+      <a href="index.html#project">About the project</a>
+    </nav>
+
+    <button id="shortlist-toggle" class="button button-outline" type="button" aria-pressed="false">
+      <span class="bookmark-icon" aria-hidden="true"></span>
+      Field shortlist
+      <span id="saved-count" class="count-badge">0</span>
+    </button>
+  </header>
+
+  <main class="atlas-main">
+    <div class="atlas-heading">
+      <div>
+        <p class="eyebrow">Philippines / The field atlas</p>
+        <h1>Discover what lives here.</h1>
+        <p>Explore species through the records they leave behind.</p>
+      </div>
+
+      <a class="source-link" href="https://www.gbif.org/" target="_blank" rel="noopener">
+        <span class="source-mark" aria-hidden="true">GBIF</span>
+        <span>Open data from<br><strong>GBIF.org</strong></span>
+      </a>
+    </div>
+
+    <section id="filters" class="filter-panel" aria-label="Search occurrence records">
+      <form id="search-form" novalidate>
+        <div class="filter-grid">
+          <div class="form-field species-field">
+            <label for="species-input">Species / scientific name</label>
+
+            <div class="search-input-wrap">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <circle cx="10.5" cy="10.5" r="6.5"/>
+                <path d="m16 16 4 4"/>
+              </svg>
+
+              <input
+                id="species-input"
+                name="species"
+                placeholder="Try Lanius schach"
+                autocomplete="off"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded="false"
+                aria-controls="species-options"
+              >
+
+              <button
+                id="clear-species"
+                type="button"
+                aria-label="Clear species search"
+                title="Clear species search"
+                hidden
+              >×</button>
+            </div>
+
+            <ul
+              id="species-options"
+              class="species-options"
+              role="listbox"
+              aria-label="Species suggestions"
+              hidden
+            ></ul>
+
+            <span id="species-hint" class="sr-only" aria-live="polite"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="area-select">Location</label>
+
+            <select id="area-select" name="area">
+              <option value="all">All Philippines</option>
+              <option value="luzon">Luzon area</option>
+              <option value="visayas">Visayas area</option>
+              <option value="mindanao">Mindanao area</option>
+              <option value="palawan">Palawan area</option>
+              <option value="map" hidden>Current map area</option>
+            </select>
+          </div>
+
+          <fieldset class="year-range">
+            <legend>Year range <span>(optional)</span></legend>
+
+            <input
+              id="year-from"
+              name="from"
+              type="number"
+              inputmode="numeric"
+              min="1600"
+              step="1"
+              placeholder="From"
+              aria-label="From year"
+            >
+
+            <span aria-hidden="true">–</span>
+
+            <input
+              id="year-to"
+              name="to"
+              type="number"
+              inputmode="numeric"
+              min="1600"
+              step="1"
+              placeholder="To"
+              aria-label="To year"
+            >
+          </fieldset>
+
+          <button class="button button-primary search-button" type="submit">
+            Explore records
+          </button>
+        </div>
+
+        <div class="filter-bottom">
+          <div id="group-filters" class="group-filters" aria-label="Species groups">
+            <button type="button" data-group="all" aria-pressed="true">All life</button>
+            <button type="button" data-group="birds" aria-pressed="false">Birds</button>
+            <button type="button" data-group="plants" aria-pressed="false">Plants</button>
+            <button type="button" data-group="mammals" aria-pressed="false">Mammals</button>
+            <button type="button" data-group="insects" aria-pressed="false">Insects</button>
+          </div>
+
+          <div class="filter-extras">
+            <label class="checkbox-label">
+              <input id="photos-only" type="checkbox" checked>
+              With photos
+            </label>
+
+            <button id="reset-filters" class="text-button" type="button">
+              Reset filters
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <p id="form-error" class="form-error" role="alert" hidden></p>
+    </section>
+
+    <div id="saved-banner" class="saved-banner" hidden>
+      <div>
+        <strong>Your field shortlist</strong>
+        <p>Saved on this browser. These records stay here when you change your search.</p>
+      </div>
+
+      <button id="back-to-results" class="button button-outline" type="button">
+        Back to explorer
+      </button>
+    </div>
+
+    <div class="workspace-topline">
+      <div>
+        <h2 id="results-heading">Occurrence records</h2>
+        <p id="results-summary" aria-live="polite">Connecting to GBIF…</p>
+      </div>
+
+      <div class="mobile-view-switch" aria-label="Display mode">
+        <button type="button" data-view="list" aria-pressed="true">List</button>
+        <button type="button" data-view="map" aria-pressed="false">Map</button>
+      </div>
+
+      <span id="active-scope" class="scope-label">Philippines · with photos</span>
+    </div>
+
+    <div id="request-message" class="request-message" role="status" hidden>
+      <span></span>
+      <button id="retry-search" class="text-button" type="button">Try again</button>
+    </div>
+
+    <section class="atlas-workspace" aria-label="Occurrence explorer">
+      <div id="records-panel" class="records-panel">
+        <div id="record-list" class="record-list" aria-busy="true"></div>
+
+        <div class="pagination" id="pagination">
+          <button id="previous-page" class="button button-outline" type="button" disabled>
+            Previous
+          </button>
+
+          <span id="page-label">Page 1</span>
+
+          <button id="next-page" class="button button-outline" type="button" disabled>
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div class="map-panel">
+        <div class="map-toolbar">
+          <span>
+            <span class="map-key" aria-hidden="true"></span>
+            <span id="map-count">Mapping records…</span>
+          </span>
+
+          <div>
+            <button id="search-map" type="button">Search this area</button>
+            <button id="fit-map" type="button" title="Fit loaded records">Fit records</button>
+          </div>
+        </div>
+
+        <div
+          id="map"
+          tabindex="0"
+          role="region"
+          aria-label="Map of published occurrence records in the Philippines"
+        ></div>
+
+        <p id="map-error" class="map-error" role="status" hidden></p>
+
+        <div class="map-legend">
+          <span><i class="legend-dot birds"></i>Birds</span>
+          <span><i class="legend-dot plants"></i>Plants</span>
+          <span><i class="legend-dot mammals"></i>Mammals</span>
+          <span><i class="legend-dot other"></i>Other</span>
+          <span class="map-legend-note">Numbers group nearby records</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="data-note">
+      <span class="note-symbol" aria-hidden="true">i</span>
+
+      <p>
+        <strong>Read the map as evidence.</strong>
+        Pins show published occurrences on the current page, not live animal locations or population sizes. Only records with coordinates and no GBIF geospatial flag are requested. Location areas are approximate bounding boxes.
+      </p>
+
+      <button id="about-data" class="text-button" type="button">About the data</button>
+    </aside>
+  </main>
+
+  <footer class="atlas-footer">
+    <span>BioAtlas PH · A project by Jeff Rio Mausisa</span>
+    <a href="https://www.gbif.org/" target="_blank" rel="noopener">Biodiversity data via GBIF</a>
+    <a href="index.html#team">Meet the author</a>
+  </footer>
+
+  <dialog id="record-dialog" class="record-dialog" aria-labelledby="detail-title">
+    <button class="dialog-close" type="button" aria-label="Close record details">×</button>
+    <div id="record-detail"></div>
+  </dialog>
+
+  <dialog id="data-dialog" class="data-dialog" aria-labelledby="data-title">
+    <button class="dialog-close" type="button" aria-label="Close data information">×</button>
+
+    <p class="eyebrow">Reading the atlas</p>
+    <h2 id="data-title">A little context goes a long way.</h2>
+
+    <p>GBIF brings together biodiversity data shared by research institutions, museums, and observation platforms. An occurrence may be an observation, a specimen, or another kind of evidence.</p>
+
+    <h3>What the numbers mean</h3>
+    <p>The search total counts matching records. It does not count unique animals, plants, or species. Each page loads up to 60 records, and only that page is drawn on the map. Clusters show the number of loaded records in an area.</p>
+
+    <h3>What is missing</h3>
+    <p>Searches exclude records without coordinates and records flagged by GBIF for geospatial issues. Some records have no photograph, year, or precise locality. Coordinates may still be uncertain or intentionally generalized. Empty results do not prove a species is absent.</p>
+
+    <h3>Locations and dates</h3>
+    <p>Island-area filters use approximate rectangles, always limited to records assigned to the Philippines. Dates are the event dates supplied by the publisher, not the dates the records were added to GBIF.</p>
+
+    <h3>Sources and your shortlist</h3>
+    <p>Record details link to GBIF and display the available dataset, record licence, and separate photo credit. Shortlisted records are stored only in this browser and may become outdated; follow the source to verify them.</p>
+
+    <a
+      class="button button-primary"
+      href="https://www.gbif.org/occurrence/search?country=PH"
+      target="_blank"
+      rel="noopener"
+    >Explore the source at GBIF</a>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <noscript>
+    <div class="no-script">
+      Please enable JavaScript to search GBIF records and use the interactive map.
+    </div>
+  </noscript>
+</body>
+</html>
+```

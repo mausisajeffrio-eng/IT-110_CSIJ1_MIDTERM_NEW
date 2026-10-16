@@ -1,0 +1,26 @@
+BIOATLAS PH — DESIGN AND SCOPE
+
+Reference lock
+Primary direction: a natural-history field guide adapted to a working atlas.
+Preserve: warm paper canvas, dark forest-green ink and controls, editorial serif
+headings, compact sans-serif data labels, fine rules and generous map area.
+The subject (Philippine biodiversity) and learning brief drive this direction.
+Refero live searches were unavailable because the subscription was inactive.
+Bundled Refero typography and craft references informed type hierarchy, focus
+states, spacing, responsive layouts and keyboard behavior instead.
+
+Decision ledger
+- Serif display type: editorial field-guide identity; never on form controls.
+- System sans-serif: accessible dense record metadata and controls.
+- Green: primary action, selected controls and plant markers.
+- Ochre: bird markers and small field-note accents, not body text.
+- Real GBIF occurrence photography: evidence, captioned with source and licence.
+- Map/list split: supports exploring records and checking their provenance.
+- Native dialog and semantic forms: keyboard support without another framework.
+- No generic dashboard KPI cards: totals describe records and loaded-page scope.
+
+Stack: ordinary HTML, CSS and JavaScript. Leaflet 1.9.4 and
+Leaflet.markercluster 1.5.3 are attributed third-party map libraries.
+Scope: two pages, GBIF species/location/year filters, clustered page records,
+pagination, details, local saved shortlist, responsive and error states.
+The student profile uses the supplied name, Jeff Rio Mausisa. 
